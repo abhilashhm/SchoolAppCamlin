@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+        Home Page
+    </title>
+
+    <!-- Load an icon library -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style type="text/css">
+        body {
+            display: flex;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #311740;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: row;
+            width: -webkit-fill-available;
+            position: fixed;
+            bottom: 0;
+            margin: auto;
+            background-color: #fff;
+            padding: 25px 20px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0px 5px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .nav-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: all 0.2s ease-out;
+        }
+
+        .nav-text {
+            font-size: 20px;
+            margin: auto;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .material-icons {
+            display: inline;
+            font-size: 32px;
+            transition: color .3s;
+        }
+
+        .nav-item.active {
+            flex-grow: 3;
+            border-radius: 30px;
+            background: #eee;
+            justify-content: flex-start;
+        }
+
+        .nav-item.active>.nav-text {
+            display: inline-block;
+        }
+
+        .nav-item.active>.material-icons.home-icon {
+            color: #5a35b5;
+        }
+
+        .material-icons.home-icon~.nav-text {
+            color: #5a35b5;
+        }
+
+        .nav-item.active>.material-icons.favorite-icon {
+            /*     color: #c9329a; */
+            color: #5a35b5;
+        }
+
+        .material-icons.favorite-icon~.nav-text {
+            /*     color: #c9329a; */
+            color: #5a35b5;
+        }
+
+        .nav-item.active>.material-icons.search-icon {
+            /*     color: #e5a023; */
+            color: #5a35b5;
+        }
+
+        .material-icons.search-icon~.nav-text {
+            /*     color: #e5a023; */
+            color: #5a35b5;
+        }
+
+        .nav-item.active>.material-icons.person-icon {
+            /*     color: #0091a9; */
+            color: #5a35b5;
+        }
+
+        .material-icons.person-icon~.nav-text {
+            /*     color: #0091a9; */
+            color: #5a35b5;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="nav">
+        <div class="nav-item active">
+            <i class="material-icons home-icon">
+                home
+            </i>
+            <span class="nav-text">Home</span>
+        </div>
+        <!-- <div class="nav-item" onclick="location.href='calendar.html';"> -->
+        <div class="nav-item">
+            <i class="material-icons favorite-icon">
+                calendar_view_day
+            </i>
+            <span class="nav-text">Calendar</span>
+        </div>
+        <div class="nav-item">
+            <i class="material-icons person-icon">
+                person
+            </i>
+            <span class="nav-text">Profile</span>
+        </div>
+    </div>
+
+    <script>
+        const navItems = document.getElementsByClassName('nav-item');
+
+        for (let i = 0; i < navItems.length; i++) {
+            navItems[i].addEventListener('click', () => {
+                for (let j = 0; j < navItems.length; j++)
+                    navItems[j].classList.remove('active');
+
+                navItems[i].classList.add('active');
+            });
+        }
+    </script>
+</body>
+
+</html>

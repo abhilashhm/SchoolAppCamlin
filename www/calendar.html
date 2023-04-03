@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+        Calendar
+    </title>
+
+    <!-- Load an icon library -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/kendo.common-material.min.css" rel="stylesheet">
+    <link href="css/kendo.material.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/kendo.all.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/moment.min.js"></script>
+
+    <style type="text/css">
+        body {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            margin: 0;
+            background-color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            padding-bottom: 60px;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: row;
+            width: -webkit-fill-available;
+            position: fixed;
+            bottom: 0;
+            margin: auto;
+            background-color: #fff;
+            padding: 25px 20px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0px 5px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .nav-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: all 0.2s ease-out;
+        }
+
+        .nav-text {
+            font-size: 20px;
+            margin: auto;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .material-icons {
+            display: inline;
+            font-size: 32px;
+            transition: color .3s;
+        }
+
+        .nav-item.active {
+            flex-grow: 3;
+            border-radius: 30px;
+            background: #eee;
+            justify-content: flex-start;
+        }
+
+        .nav-item.active>.nav-text {
+            display: inline-block;
+        }
+
+        .nav-item.active>.material-icons.home-icon {
+            color: #5a35b5;
+        }
+
+        .material-icons.home-icon~.nav-text {
+            color: #5a35b5;
+        }
+
+        .nav-item.active>.material-icons.favorite-icon {
+            /*     color: #c9329a; */
+            color: #5a35b5;
+        }
+
+        .material-icons.favorite-icon~.nav-text {
+            /*     color: #c9329a; */
+            color: #5a35b5;
+        }
+
+        .nav-item.active>.material-icons.search-icon {
+            /*     color: #e5a023; */
+            color: #5a35b5;
+        }
+
+        .material-icons.search-icon~.nav-text {
+            /*     color: #e5a023; */
+            color: #5a35b5;
+        }
+
+        .nav-item.active>.material-icons.person-icon {
+            /*     color: #0091a9; */
+            color: #5a35b5;
+        }
+
+        .material-icons.person-icon~.nav-text {
+            /*     color: #0091a9; */
+            color: #5a35b5;
+        }
+
+        .k-header {
+            background-color: #5a35b5;
+        }
+
+        .k-scheduler-header .k-event {
+            width: 20px !important;
+            height: 20px !important;
+            border-radius: 50%;
+            padding: 0;
+            position: absolute;
+            bottom: 0;
+        }
+
+        .k-scheduler .k-header .k-link{
+            background-color: #5a35b5;
+        }
+
+        .k-event-template,
+        k-event-actions {
+            display: none;
+            padding: 0;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div id="scheduler"></div>
+
+    <script id="template" type="text/x-kendo-template">
+        #var element = target.is(".k-task") ? target : target.parent();#
+        #var uid = element.attr("data-uid");#
+        #var scheduler = target.closest("[data-role=scheduler]").data("kendoScheduler");#
+        #var model = scheduler.occurrenceByUid(uid);# 
+
+        #if(model) {#
+            <strong>event start:</strong> #=kendo.format('{0:d}',model.start)#<br />
+            <strong>event end:</strong> #=kendo.format('{0:d}',model.end)#<br />
+            <strong>event description:</strong> #=model.description#<br />
+        #} else {#
+            <strong>No event data is available</strong>
+        #}#
+    </script>
+
+    <div class="nav">
+        <div class="nav-item" onclick="location.href='landing.html';">
+            <i class="material-icons home-icon">
+                home
+            </i>
+            <span class="nav-text">Home</span>
+        </div>
+        <div class="nav-item active">
+            <i class="material-icons favorite-icon">
+                calendar_view_day
+            </i>
+            <span class="nav-text">Calendar</span>
+        </div>
+        <div class="nav-item">
+            <i class="material-icons person-icon">
+                person
+            </i>
+            <span class="nav-text">Profile</span>
+        </div>
+    </div>
+
+    <script>
+        var date = moment();
+
+        var currentDate = date.format('YYYY/MM/D');
+        var currentTime = date.format('YYYY/MM/D h:mm a');
+        console.log(currentDate);
+        console.log(currentTime);
+
+        const navItems = document.getElementsByClassName('nav-item');
+
+        for (let i = 0; i < navItems.length; i++) {
+            navItems[i].addEventListener('click', () => {
+                for (let j = 0; j < navItems.length; j++)
+                    navItems[j].classList.remove('active');
+
+                navItems[i].classList.add('active');
+            });
+        }
+    </script>
+
+    <script>
+
+        $(function () {
+            $("#scheduler").kendoScheduler({
+                //date: new Date("2023/3/13"),
+                //startTime: new Date("2023/3/13 07:00 AM"),
+                date: currentDate,
+                startTime: currentTime,
+                height: "-webkit-fill-available",
+                views: [
+                    // "day",
+                    // "workWeek",
+                    // "week",
+                    // "month",
+                    { type: "agenda", selected: true },
+                    // { type: "timeline", eventHeight: 50 }
+                ],
+                timezone: "Etc/UTC",
+                dataSource: {
+                    batch: true,
+                    transport: {
+                        read: {
+                            url: "https://demos.telerik.com/kendo-ui/service/tasks",
+                            dataType: "jsonp"
+                        },
+                        update: {
+                            url: "https://demos.telerik.com/kendo-ui/service/tasks/update",
+                            dataType: "jsonp"
+                        },
+                        create: {
+                            url: "https://demos.telerik.com/kendo-ui/service/tasks/create",
+                            dataType: "jsonp"
+                        },
+                        destroy: {
+                            url: "https://demos.telerik.com/kendo-ui/service/tasks/destroy",
+                            dataType: "jsonp"
+                        },
+                        parameterMap: function (options, operation) {
+                            if (operation !== "read" && options.models) {
+                                return { models: kendo.stringify(options.models) };
+                            }
+                        }
+                    },
+                    schema: {
+                        model: {
+                            id: "taskId",
+                            fields: {
+                                taskId: { from: "TaskID", type: "number" },
+                                title: { from: "Title", defaultValue: "No title", validation: { required: true } },
+                                start: { type: "date", from: "Start" },
+                                end: { type: "date", from: "End" },
+                                startTimezone: { from: "StartTimezone" },
+                                endTimezone: { from: "EndTimezone" },
+                                description: { from: "Description" },
+                                recurrenceId: { from: "RecurrenceID" },
+                                recurrenceRule: { from: "RecurrenceRule" },
+                                recurrenceException: { from: "RecurrenceException" },
+                                ownerId: { from: "OwnerID", defaultValue: 1 },
+                                isAllDay: { type: "boolean", from: "IsAllDay" }
+                            }
+                        }
+                    }
+                },
+                resources: [
+                    {
+                        field: "ownerId",
+                        title: "Owner",
+                        dataSource: [
+                            // { text: "Alex", value: 1, color: "#f8a398" },
+                            // { text: "Bob", value: 2, color: "#51a0ed" },
+                            // { text: "Charlie", value: 3, color: "#56ca85" }
+                        ]
+                    }
+                ]
+            });
+
+            $("#scheduler").kendoTooltip({
+                filter: ".k-event:not(.k-event-drag-hint) > div, .k-task",
+                position: "top",
+                width: 250,
+                content: kendo.template($('#template').html())
+            });
+        });
+    </script>
+
+</body>
+
+</html>

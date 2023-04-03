@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Login</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<!--===============================================================================================-->
+	<script language="JavaScript" type="text/javascript" src="js/jquery.min.js"></script>
+
+</head>
+
+<body onload="">
+
+	<div class="limiter">
+		<div class="container-login100" style="background-image: url('images/bg-01.jpg');">
+			<!--<div class="wrap-login100">-->
+			<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+				<div class="login100-form validate-form">
+					<div class="login100-form-title p-b-26">
+						<img src="images/school_logo.jpeg" width="150" height="150">
+					</div>
+
+					<span class="login100-form-title p-b-26">
+						CAMLIN SCHOOL
+					</span>
+
+					<div class="wrap-input100 validate-input m-b-23" data-validate="Invalid Mobile">
+						<span class="label-input100">Mobile</span>
+						<input class="input100" type="number" onKeyPress="if(this.value.length==10) return false;"
+							name="mobile" placeholder="Enter you Mobile number" id="mobile">
+						<span class="focus-input100" data-symbol="&#xf2be;"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input m-b-23" data-validate="Enter OTP" style="display:none"
+						id="otp-holder">
+						<span class="label-input100">OTP</span>
+						<input class="input100" type="number" onKeyPress="if(this.value.length==6) return false;"
+							name="otp" placeholder="Enter the OTP" id="otp">
+						<span class="focus-input100" data-symbol="&#xf190;"></span>
+					</div>
+
+					<div class="container-login100-form-btn">
+						<div class="wrap-login100-form-btn">
+							<div class="login100-form-bgbtn"></div>
+							<button class="login100-form-btn" id="get-otp">
+								Get OTP
+							</button>
+						</div>
+					</div>
+
+					<div class="container-login100-form-btn">
+						<div class="wrap-login100-form-btn">
+							<div class="login100-form-bgbtn"></div>
+							<button class="login100-form-btn" id="login" style="display:none">
+								LOGIN
+							</button>
+						</div>
+					</div>
+
+					<div class="flex-c-m  p-t-54 p-b-20">
+						<a href="https://www.facebook.com/camlinschool/" target="_blank"
+							class="login100-social-item bg1">
+							<i class="fa fa-facebook"></i>
+						</a>
+
+						<a href="http://instagram.com/_u/camlinschool/" target="_blank"
+							class="login100-social-item bg2">
+							<i class="fa fa-instagram"></i>
+						</a>
+
+						<a href="https://youtube.com/@camlinschool5572" target="_blank"
+							class="login100-social-item bg3">
+							<i class="fa fa-youtube"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/daterangepicker/moment.min.js"></script>
+	<script src="vendor/daterangepicker/daterangepicker.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/countdowntime/countdowntime.js"></script>
+	<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+	<!--===============================================================================================-->
+	<script type="text/javascript">
+
+		document.getElementById("get-otp").onclick = function () {
+			// To validate phone number
+			var phonepattern = /^\d{10}$/;
+			var mobno = document.getElementById("mobile").value;
+
+			if (document.getElementById("mobile").value.match(phonepattern)) {
+				// Check if mobile is registered with us
+				const url = `http://103.12.1.88/camlinwebservice/getstudentdata/${mobno}`;
+				// fetch(url, {
+				// 	mode: 'cors',
+				// 	// headers: {
+				// 	// 	'Access-Control-Allow-Origin': '*'
+				// 	// },
+				// 	method: 'GET'
+				// })
+				// 	.then(response => response.text())
+				$.ajax({
+					type: "GET",
+					url: url,
+					success: function (xml) {
+						console.log(xml);
+						//alert(data.documentElement.getElementsByTagName("Response")[0].childNodes[0].nodeValue);
+
+						// let parser = new DOMParser();
+						// let xml = parser.parseFromString(data, "text/xml");
+						// console.log(xml.getElementsByTagName('Response'));
+
+						if ((xml.getElementsByTagName('Response')[0].childNodes[0].nodeValue).match("FAILED: Mobile number not found")) {
+							alert("This mobile number is not registered with us");
+						} else {
+
+							window.localStorage.setItem('AdmissionNo', xml.getElementsByTagName('AdmissionNo')[0].childNodes[0].nodeValue);
+							window.localStorage.setItem('CardNo', xml.getElementsByTagName('CardNo')[0].childNodes[0].nodeValue);
+							window.localStorage.setItem('Name', xml.getElementsByTagName('Name')[0].childNodes[0].nodeValue);
+							window.localStorage.setItem('Class', xml.getElementsByTagName('Class')[0].childNodes[0].nodeValue);
+							window.localStorage.setItem('Section', xml.getElementsByTagName('Section')[0].childNodes[0].nodeValue);
+							window.localStorage.setItem('Gender', xml.getElementsByTagName('Gender')[0].childNodes[0].nodeValue);
+							window.localStorage.setItem('DateOfBirth', xml.getElementsByTagName('DateOfBirth')[0].childNodes[0].nodeValue);
+							window.localStorage.setItem('FatherName', xml.getElementsByTagName('FatherName')[0].childNodes[0].nodeValue);
+							window.localStorage.setItem('FatherMobNo', xml.getElementsByTagName('FatherMobNo')[0].childNodes[0].nodeValue);
+							window.localStorage.setItem('MotherName', xml.getElementsByTagName('MotherName')[0].childNodes[0].nodeValue);
+							window.localStorage.setItem('MotherMobNo', xml.getElementsByTagName('MotherMobNo')[0].childNodes[0].nodeValue);
+							window.localStorage.setItem('StudentAdhar', xml.getElementsByTagName('StudentAdhar')[0].childNodes[0].nodeValue);
+
+							// 			// console.log(window.localStorage.getItem('AdmissionNo'));
+							// 			// console.log(window.localStorage.getItem('CardNo'));
+							// 			// console.log(window.localStorage.getItem('Name'));
+							// 			// console.log(window.localStorage.getItem('Class'));
+							// 			// console.log(window.localStorage.getItem('Section'));
+							// 			// console.log(window.localStorage.getItem('Gender'));
+							// 			// console.log(window.localStorage.getItem('DateOfBirth'));
+							// 			// console.log(window.localStorage.getItem('FatherName'));
+							// 			// console.log(window.localStorage.getItem('FatherMobNo'));
+							// 			// console.log(window.localStorage.getItem('MotherName'));
+							// 			// console.log(window.localStorage.getItem('MotherMobNo'));
+							// 			// console.log(window.localStorage.getItem('StudentAdhar'));
+
+							// Trigger OTP
+							const key = "XVGzVce3";
+							const to = "8147647778";
+							const from = "CSHIGH";
+							const entityid = "1201161181398202891";
+							const templateid = "1207168019348455059";
+
+							// Generate a 6 digit OTP
+							const otpgen = Math.floor(100000 + Math.random() * 900000);
+							window.localStorage.setItem('otpgen', otpgen);
+							console.log(window.localStorage.getItem('otpgen'));
+
+							const url = `https://api.onex-aura.com/api/sms?key=${key}&to=${to}&from=${from}&body=Dear%20User,%20Your%20OTP%20for%20login%20to%20Camlin%20School%20app%20is%20${otpgen}.%20Valid%20for%2010%20minutes.%20Please%20do%20not%20share%20this%20OTP.%20Regards,%20CAMLIN%20SCHOOL&entityid=${entityid}&templateid=${templateid}`;
+							console.log(url);
+
+							$.ajax({
+								type: "GET",
+								url: url,
+								complete: function () {
+
+									// To unhide otp field
+									document.getElementById("get-otp").style.display = "none";
+									document.getElementById("otp-holder").style.display = "block";
+									document.getElementById("login").style.display = "block";
+
+								},
+								cache: false
+							});
+						}
+					},
+					cache: false
+				});
+			} else {
+				alert("Please enter a valid mobile number")
+			}
+		}
+
+		document.getElementById("login").onclick = function () {
+			console.log("Login clicked");
+			// To validate OTP
+			var otppattern = /^\d{6}$/;
+			var otp = document.getElementById("otp").value;
+			var str = new window.DOMParser();
+
+			if (otp.match(otppattern)) {
+				if (otp.match(window.localStorage.getItem('otpgen'))) {
+					window.location = "landing.html"
+				} else {
+					alert("Please enter valid OTP");
+				}
+			} else {
+				alert("Please enter valid OTP");
+			}
+		}
+
+	</script>
+
+</body>
+
+</html>
