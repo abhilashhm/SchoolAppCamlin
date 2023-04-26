@@ -9,144 +9,160 @@
         Home Page
     </title>
 
-    <!-- Load an icon library -->
+    <link rel="stylesheet" href="css/landing.css">
+    <link rel="stylesheet" href="css/navbar.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif|Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/reset.css">
+    <link rel="stylesheet" href="css/splide.min.css">
+    <link rel="stylesheet" href="css/slider.css">
 
-    <style type="text/css">
-        body {
-            display: flex;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #311740;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .nav {
-            display: flex;
-            flex-direction: row;
-            width: -webkit-fill-available;
-            position: fixed;
-            bottom: 0;
-            margin: auto;
-            background-color: #fff;
-            padding: 25px 20px;
-            border-bottom-left-radius: 30px;
-            border-bottom-right-radius: 30px;
-            box-shadow: 0px 5px 40px rgba(0, 0, 0, 0.8);
-        }
-
-        .nav-item {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-grow: 1;
-            padding: 10px 15px;
-            cursor: pointer;
-            transition: all 0.2s ease-out;
-        }
-
-        .nav-text {
-            font-size: 20px;
-            margin: auto;
-            text-align: center;
-            font-weight: 500;
-            display: none;
-            transition: all 0.3s ease;
-        }
-
-        .material-icons {
-            display: inline;
-            font-size: 32px;
-            transition: color .3s;
-        }
-
-        .nav-item.active {
-            flex-grow: 3;
-            border-radius: 30px;
-            background: #eee;
-            justify-content: flex-start;
-        }
-
-        .nav-item.active>.nav-text {
-            display: inline-block;
-        }
-
-        .nav-item.active>.material-icons.home-icon {
-            color: #5a35b5;
-        }
-
-        .material-icons.home-icon~.nav-text {
-            color: #5a35b5;
-        }
-
-        .nav-item.active>.material-icons.favorite-icon {
-            /*     color: #c9329a; */
-            color: #5a35b5;
-        }
-
-        .material-icons.favorite-icon~.nav-text {
-            /*     color: #c9329a; */
-            color: #5a35b5;
-        }
-
-        .nav-item.active>.material-icons.search-icon {
-            /*     color: #e5a023; */
-            color: #5a35b5;
-        }
-
-        .material-icons.search-icon~.nav-text {
-            /*     color: #e5a023; */
-            color: #5a35b5;
-        }
-
-        .nav-item.active>.material-icons.person-icon {
-            /*     color: #0091a9; */
-            color: #5a35b5;
-        }
-
-        .material-icons.person-icon~.nav-text {
-            /*     color: #0091a9; */
-            color: #5a35b5;
-        }
-    </style>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/splide.min.js" type="text/javascript"></script>
+    <script src="js/loader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"
+        type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.25/vue.min.js" type="text/javascript"></script>
+    <script async src="https://kit.fontawesome.com/6cc05e1e8e.js" crossorigin="anonymous"></script>    
 
 </head>
 
 <body>
-    <div class="nav">
-        <div class="nav-item active">
-            <i class="material-icons home-icon">
-                home
-            </i>
-            <span class="nav-text">Home</span>
-        </div>
-        <!-- <div class="nav-item" onclick="location.href='calendar.html';"> -->
-        <div class="nav-item">
-            <i class="material-icons favorite-icon">
-                calendar_view_day
-            </i>
-            <span class="nav-text">Calendar</span>
-        </div>
-        <div class="nav-item">
-            <i class="material-icons person-icon">
-                person
-            </i>
-            <span class="nav-text">Profile</span>
+
+    <div id="loader" class="center"></div>
+
+    <section id="cd-timeline" class="cd-container"></section>
+
+    <div id="navigation-wrapper">
+        <div class="navigation">
+            <div class="navigation-buttons">
+                <ul>
+                    <li v-for="nav_item in navigation" v-bind:class="{'selected': nav_item.selected}"
+                        v-on:click="selectItem($index)">
+                        <i class="material-icons">{{nav_item.icon}}</i>
+                        <p>{{nav_item.name}}</p>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 
     <script>
-        const navItems = document.getElementsByClassName('nav-item');
+        const mobno = window.localStorage.getItem('LoggedInMob');
 
-        for (let i = 0; i < navItems.length; i++) {
-            navItems[i].addEventListener('click', () => {
-                for (let j = 0; j < navItems.length; j++)
-                    navItems[j].classList.remove('active');
+        jQuery(document).ready(function ($) {
+            var $timeline_block = $('.cd-timeline-block');
 
-                navItems[i].classList.add('active');
+            //hide timeline blocks which are outside the viewport
+            $timeline_block.each(function () {
+                if ($(this).offset().top > $(window).scrollTop() + $(window).height() * 0.75) {
+                    $(this).find('.cd-timeline-img, .cd-timeline-content').addClass('is-hidden');
+                }
             });
-        }
+
+            //on scolling, show/animate timeline blocks when enter the viewport
+            $(window).on('scroll', function () {
+                $timeline_block.each(function () {
+                    if ($(this).offset().top <= $(window).scrollTop() + $(window).height() * 0.75 && $(this).find('.cd-timeline-img').hasClass('is-hidden')) {
+                        $(this).find('.cd-timeline-img, .cd-timeline-content').removeClass('is-hidden').addClass('bounce-in');
+                    }
+                });
+            });
+        });
+
+        const url = `http://68.178.168.127/camlinwebservice/getTimeLine/${mobno}`;
+
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (xml) {
+                console.log(xml);
+                //alert(data.documentElement.getElementsByTagName("Response")[0].childNodes[0].nodeValue);
+
+                // let parser = new DOMParser();
+                // let xml = parser.parseFromString(data, "text/xml");
+                // console.log(xml.getElementsByTagName('Response'));
+
+                if ((xml.getElementsByTagName('Response')[0].childNodes[0].nodeValue).match("FAILED: Mobile number / TimeLine Data not found")) {
+                    // alert("Timeline Data not found!");
+                    document.getElementById("cd-timeline").innerHTML += "<div class='no-data'>Timeline Data not found!</div>";
+                } else {
+                    // alert(xml.getElementsByTagName('Message').length);
+                    //alert(xml.getElementsByTagName('Title')[0].nodeValue);
+
+                    for (let i = 0; i < xml.getElementsByTagName('Message').length; i++) {
+                        document.getElementById("cd-timeline").innerHTML += "<div class='cd-timeline-block'><div class='cd-timeline-img cd-picture'><img src='images/" + xml.getElementsByTagName('CommunicationType')[i].childNodes[0].nodeValue + ".jpg' alt='Picture'></div><div class='cd-timeline-content'><h2>" + window.localStorage.getItem('Name') + " | " + xml.getElementsByTagName('CommunicationType')[i].childNodes[0].nodeValue + "</h2><p>" + xml.getElementsByTagName('Body')[i].childNodes[0].nodeValue + "</p><!--<a href='#0' class='cd-read-more'>Read more</a>--><div class='cd-content'><span class='cd-date'>" + xml.getElementsByTagName('Date')[i].childNodes[0].nodeValue + "</span><span class='cd-time'>" + xml.getElementsByTagName('Time')[i].childNodes[0].nodeValue + "</span><span class='published'>" + xml.getElementsByTagName('PublishedBy')[i].childNodes[0].nodeValue + "</span></div></div></div> " +"<section class='section slider__section'><div class='container slider__wrapper'><div class='slider__column splide'><div class='splide__track'><ul class='splide__list'><li class='splide__slide'><img src='https://source.unsplash.com/1920x1280/?animal' alt='Slider'></li><li class='splide__slide'><img src='https://source.unsplash.com/1920x1280/?nature' alt='Slider'></li><li class='splide__slide'><img src='https://source.unsplash.com/1920x1280/?people' alt='Slider'></li><li class='splide__slide'><img src='https://source.unsplash.com/1920x1280/?flower' alt='Slider'></li><li class='splide__slide'><img src='https://source.unsplash.com/1920x1280/?travel' alt='Slider'></li><li class='splide__slide'><img src='https://source.unsplash.com/1920x1280/?fruits' alt='Slider'></li></ul></div></div></div></section>";
+                    }
+                }
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+                alert(status);
+                alert(error);
+            },
+            cache: false
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                const splide = new Splide(".splide", {
+                    // Optional parameters
+                    start: 0,
+                    perPage: 1,
+                    perMove: 1,
+                    gap: 20,
+                    type: "loop",
+                    drag: "true",
+                    snap: true,
+                    // interval: 3000,
+                    arrows: true,
+                    pagination: true,
+                    rewind: true,
+                    rewindByDrag: true,
+                    lazyLoad: true,
+
+                    // Responsive breakpoint
+                    breakpoints: {
+                        768: {
+                            perPage: 1,
+                            snap: true
+                        }
+                    }
+                });
+                splide.mount();
+            }, 100);
+        });
+    </script>
+
+    <script>
+        var app = new Vue({
+            el: '#navigation-wrapper',
+            data: {
+                navigation: [
+                    { name: 'HOME', icon: 'home', selected: true },
+                    { name: 'CALENDAR', icon: 'calendar_month', selected: false },
+                    { name: 'PROFILE', icon: 'account_circle', selected: false }
+                ]
+            },
+            methods: {
+                selectItem: function (placement) {
+                    for (var i = 0; i < this.navigation.length; i++) {
+                        this.navigation[i].selected = false;
+                    }
+                    this.navigation[placement].selected = true;
+                    switch (placement) {
+                        case 1:
+                            location.href = 'cal.html'
+                            break;
+                        case 2:
+                            location.href = 'profile.html'
+                            break;
+                    }
+                }
+            }
+        })
     </script>
 </body>
 

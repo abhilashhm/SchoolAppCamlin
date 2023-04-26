@@ -31,7 +31,7 @@
 
 </head>
 
-<body onload="">
+<body onload="login()">
 
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('images/bg-01.jpg');">
@@ -120,6 +120,13 @@
 	<!--===============================================================================================-->
 	<script type="text/javascript">
 
+		function login() {
+			const itemSet = (localStorage.getItem('LoggedIn') !== null);
+			if (itemSet) {
+				window.location = "landing.html"
+			}
+		}
+
 		document.getElementById("get-otp").onclick = function () {
 			// To validate phone number
 			var phonepattern = /^\d{10}$/;
@@ -127,7 +134,7 @@
 
 			if (document.getElementById("mobile").value.match(phonepattern)) {
 				// Check if mobile is registered with us
-				const url = `http://103.12.1.88/camlinwebservice/getstudentdata/${mobno}`;
+				const url = `http://68.178.168.127/camlinwebservice/getstudentdata/${mobno}`;
 				// fetch(url, {
 				// 	mode: 'cors',
 				// 	// headers: {
@@ -150,7 +157,7 @@
 						if ((xml.getElementsByTagName('Response')[0].childNodes[0].nodeValue).match("FAILED: Mobile number not found")) {
 							alert("This mobile number is not registered with us");
 						} else {
-
+							window.localStorage.setItem('LoggedInMob', mobno);
 							window.localStorage.setItem('AdmissionNo', xml.getElementsByTagName('AdmissionNo')[0].childNodes[0].nodeValue);
 							window.localStorage.setItem('CardNo', xml.getElementsByTagName('CardNo')[0].childNodes[0].nodeValue);
 							window.localStorage.setItem('Name', xml.getElementsByTagName('Name')[0].childNodes[0].nodeValue);
@@ -179,7 +186,7 @@
 
 							// Trigger OTP
 							const key = "XVGzVce3";
-							const to = "8147647778";
+							const to = mobno;
 							const from = "CSHIGH";
 							const entityid = "1201161181398202891";
 							const templateid = "1207168019348455059";
@@ -201,11 +208,22 @@
 									document.getElementById("get-otp").style.display = "none";
 									document.getElementById("otp-holder").style.display = "block";
 									document.getElementById("login").style.display = "block";
-
+									document.getElementById("mobile").disabled = true;
+									document.getElementById("otp").value = "";
+								},
+								error: function (request, status, error) {
+									alert(request.responseText);
+									alert(status);
+									alert(error);
 								},
 								cache: false
 							});
 						}
+					},
+					error: function (request, status, error) {
+						alert(request.responseText);
+						alert(status);
+						alert(error);
 					},
 					cache: false
 				});
@@ -223,6 +241,7 @@
 
 			if (otp.match(otppattern)) {
 				if (otp.match(window.localStorage.getItem('otpgen'))) {
+					window.localStorage.setItem('LoggedIn', true);
 					window.location = "landing.html"
 				} else {
 					alert("Please enter valid OTP");

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.abhi.camlin" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.camlinschool.cordova" version="1.7.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Camlin School</name>
     <description>Camlin School App</description>
     <author email="abhilashhm15@gmail.com" href="#">
@@ -17,4 +17,5 @@
     <preference name="AndroidInsecureFileModeEnabled" value="true" />
     <preference name="scheme" value="https" />
     <preference name="hostname" value="localhost" />
+    <splash src="res/splashscreen.png" />
 </widget>

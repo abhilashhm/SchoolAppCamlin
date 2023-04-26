@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+        Profile
+    </title>
+
+
+    <link rel="stylesheet" href="css/navbar.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif|Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/reset.css">
+
+    <script src="js/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.25/vue.min.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+    <!-- <div id="scheduler"></div> -->
+
+    <div id="navigation-wrapper">
+        <div class="navigation">
+            <div class="navigation-content">
+            </div>
+            <div class="navigation-buttons">
+                <ul>
+                    <li v-for="nav_item in navigation" v-bind:class="{'selected': nav_item.selected}"
+                        v-on:click="selectItem($index)">
+                        <i class="material-icons">{{nav_item.icon}}</i>
+                        <p>{{nav_item.name}}</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="nav">
+        <div class="nav-item" onclick="location.href='landing.html';">
+            <i class="material-icons home-icon">
+                home
+            </i>
+            <span class="nav-text">Home</span>
+        </div>
+        <div class="nav-item active">
+            <i class="material-icons favorite-icon">
+                calendar_view_day
+            </i>
+            <span class="nav-text">Calendar</span>
+        </div>
+        <div class="nav-item"  onclick="location.href='profile.html';">
+            <i class="material-icons person-icon">
+                person
+            </i>
+            <span class="nav-text">Profile</span>
+        </div>
+    </div> -->
+
+    <script>
+        // const navItems = document.getElementsByClassName('nav-item');
+
+        // for (let i = 0; i < navItems.length; i++) {
+        //     navItems[i].addEventListener('click', () => {
+        //         for (let j = 0; j < navItems.length; j++)
+        //             navItems[j].classList.remove('active');
+
+        //         navItems[i].classList.add('active');
+        //     });
+        // }
+
+        var app = new Vue({
+            el: '#navigation-wrapper',
+            data: {
+                navigation: [
+                    { name: 'HOME', icon: 'home', selected: false },
+                    { name: 'CALENDAR', icon: 'calendar_month', selected: false },
+                    { name: 'PROFILE', icon: 'account_circle', selected: true }
+                ]
+            },
+            methods: {
+                selectItem: function (placement) {
+                    for (var i = 0; i < this.navigation.length; i++) {
+                        this.navigation[i].selected = false;
+                    }
+                    this.navigation[placement].selected = true;
+                    switch (placement) {
+                        case 0:
+                            location.href = 'landing.html'
+                            break;
+                        case 1:
+                            location.href = 'cal.html'
+                            break;
+                    }
+                }
+            }
+        })
+    </script>
+
+</body>
+
+</html>
