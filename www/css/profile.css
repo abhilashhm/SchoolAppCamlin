@@ -1,0 +1,119 @@
+body {
+    background: #ffffff;
+    margin-top: 20px;
+}
+
+html body .m-t-30 {
+    margin-top: 30px;
+}
+
+html body .m-t-10 {
+    margin-top: 10px;
+}
+
+html body .font-medium {
+    font-weight: 500;
+}
+
+.img-circle {
+    border-radius: 100%;
+}
+
+h4 {
+    line-height: 22px;
+    font-size: 18px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    color: #455a64;
+    font-family: "sans-serif";
+    font-size: 18px;
+    line-height: 1.1;
+    margin-block-start: 0.5em;
+    margin-block-end: 1em;
+    display: block;
+}
+
+h6 {
+    color: #455a64;
+    font-family: "sans-serif";
+    font-size: 18px;
+    line-height: 1.1;
+    margin-block-start: 1.5em;
+    margin-block-end: 0.5em;
+    display: block;
+}
+
+.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-radius: 0.25rem;
+}
+
+.card .card-subtitle {
+    font-weight: 300;
+    margin-bottom: 15px;
+    color: #99abb4;
+}
+
+.card-body {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 1.25rem;
+}
+
+a.link {
+    color: #455a64;
+}
+
+.btn-secondary,
+.btn-secondary.disabled {
+    -webkit-box-shadow: 0 2px 2px 0 rgba(169, 169, 169, 0.14), 0 3px 1px -2px rgba(169, 169, 169, 0.2), 0 1px 5px 0 rgba(169, 169, 169, 0.12);
+    box-shadow: 0 2px 2px 0 rgba(169, 169, 169, 0.14), 0 3px 1px -2px rgba(169, 169, 169, 0.2), 0 1px 5px 0 rgba(169, 169, 169, 0.12);
+    -webkit-transition: 0.2s ease-in;
+    -o-transition: 0.2s ease-in;
+    transition: 0.2s ease-in;
+    background-color: #ffffff;
+    color: #67757c;
+    border-color: #b1b8bb;
+}
+
+.btn-circle {
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+}
+
+.btn {
+    padding: 7px 12px;
+    cursor: pointer;
+    margin: 30px;
+}
+
+.text-muted {
+    color: #868e96 !important;
+    font-size: 18px;
+    margin-block-end: 0.5em;
+}
+
+.up {
+    margin-top: -30px;
+    box-shadow: 5px;
+}
+
+p {
+    margin: 0 !important;
+}
