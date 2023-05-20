@@ -46,6 +46,8 @@
     </div>
 
     <script>
+        const schoolname = window.localStorage.getItem("schoolname");
+        
         document.getElementById("cd-timeline").innerHTML = '';
         const mobno = window.localStorage.getItem('LoggedInMob');
 
@@ -69,7 +71,7 @@
             });
         });
 
-        const atturl = `http://68.178.168.127/camlinwebservice/getattdata/${mobno}`;
+        const atturl = `http://68.178.168.127/${schoolname}/getattdata/${mobno}`;
 
         $.ajax({
             type: "GET",
@@ -93,7 +95,7 @@
             cache: false
         });
 
-        const timelineurl = `http://68.178.168.127/camlinwebservice/getTimeLine/${mobno}`;
+        const timelineurl = `http://68.178.168.127/${schoolname}/getTimeLine/${mobno}`;
 
         $.ajax({
             type: "GET",

@@ -119,6 +119,8 @@
 	<script src="js/main.js"></script>
 	<!--===============================================================================================-->
 	<script type="text/javascript">
+		window.localStorage.setItem("schoolname","cleverland");
+		const schoolname = window.localStorage.getItem("schoolname");
 
 		function login() {
 			const itemSet = (localStorage.getItem('LoggedIn') !== null);
@@ -134,7 +136,7 @@
 
 			if (document.getElementById("mobile").value.match(phonepattern)) {
 				// Check if mobile is registered with us
-				const url = `http://68.178.168.127/camlinwebservice/getstudentdata/${mobno}`;
+				const url = `http://68.178.168.127/${schoolname}/getstudentdata/${mobno}`;
 				// fetch(url, {
 				// 	mode: 'cors',
 				// 	// headers: {
