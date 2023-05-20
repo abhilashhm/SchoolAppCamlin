@@ -14,13 +14,20 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "cordova-android": "^11.0.0",
-    "cordova-browser": "^6.0.0"
+    "cordova-browser": "^6.0.0",
+    "cordova-plugin-file": "^7.0.0",
+    "cordova-plugin-file-opener2": "^4.0.0"
   },
   "cordova": {
     "platforms": [
       "browser",
       "android"
     ],
-    "plugins": {}
+    "plugins": {
+      "cordova-plugin-file": {
+        "ANDROIDX_WEBKIT_VERSION": "1.4.0"
+      },
+      "cordova-plugin-file-opener2": {}
+    }
   }
 }
