@@ -9,7 +9,6 @@
         Profile
     </title>
 
-
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/profile.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -23,7 +22,7 @@
 
 </head>
 
-<body>
+<body onload="onLoad()">
 
     <div class="container">
         <div class="row">
@@ -33,26 +32,29 @@
                     <div class="card-body">
                         <center class="m-t-30">
                             <img src="" id="avatar" class="img-circle" width="120">
-                            <h4 class="card-title m-t-10" id="name"></h4>
-                            <h5 class="card-subtitle">OWNER</h5>
+                            <h4 class="card-title m-t-10" id="name">-</h4>
+                            <h5 class="card-subtitle" id="class">-</h5>
                         </center>
                     </div>
                     <!-- <div>
                         <hr>
                     </div> -->
                     <div class="card-body up">
-                        <h6>Contact No.</h6>
-                        <small class="text-muted p-t-30 db" id="mobno"></small>
+                        <h6>Date of Birth</h6>
+                        <small class="text-muted p-t-30 db" id="dob">-</small>
 
-                        <h6>Address</h6>
-                        <small class="text-muted p-t-30 db">-</small>
+                        <h6>Father Mobile No.</h6>
+                        <small class="text-muted p-t-30 db" id="fathermob">-</small>
 
-                        <h6>Email ID</h6>
-                        <small class="text-muted">-</small>
+                        <h6>Mother Mobile No.</h6>
+                        <small class="text-muted p-t-30 db" id="motherno">-</small>
+
+                        <h6>Student Aadhaar Number</h6>
+                        <small class="text-muted p-t-30 db" id="aadhaar">-</small>
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-default btn-sm">
+            <button type="button" class="btn btn-default btn-sm" id="logout">
                 <span class="glyphicon glyphicon-log-out"></span> Log out
             </button>
         </div>
@@ -80,6 +82,7 @@
                 navigation: [
                     { name: 'HOME', icon: 'home', selected: false },
                     { name: 'CALENDAR', icon: 'calendar_month', selected: false },
+                    { name: 'FEES', icon: 'payment', selected: false },
                     { name: 'PROFILE', icon: 'account_circle', selected: true }
                 ]
             },
@@ -96,27 +99,55 @@
                         case 1:
                             location.href = 'cal.html'
                             break;
+                        case 2:
+                            location.href = 'fees.html'
+                            break;
+                        case 3:
+                            location.href = 'test.html'
+                            break;
                     }
                 }
             }
         })
 
-        const name = window.localStorage.getItem('Name');
-        const mobno = window.localStorage.getItem('LoggedInMob');
-        const address = window.localStorage.getItem('Address');
-        const emailid = window.localStorage.getItem('EmailID');
+        const Name = window.localStorage.getItem('Name');
+        const Class = window.localStorage.getItem('Class');
+        const DateOfBirth = window.localStorage.getItem('DateOfBirth');
+        const FatherMobNo = window.localStorage.getItem('FatherMobNo');
+        const MotherMobNo = window.localStorage.getItem('MotherMobNo');
+        const StudentAdhar = window.localStorage.getItem('StudentAdhar');
+        
 
-        document.getElementById("name").innerHTML = name;
-        document.getElementById("mobno").innerHTML = "+91-" + mobno;
+        document.getElementById("name").innerHTML = Name;
+        document.getElementById("class").innerHTML = Class;
+        document.getElementById("dob").innerHTML = DateOfBirth;
+        document.getElementById("fathermob").innerHTML = "+91-" + FatherMobNo;
+        document.getElementById("motherno").innerHTML = "+91-" + MotherMobNo;
+        document.getElementById("aadhaar").innerHTML = StudentAdhar;
+        
 
-        if (window.localStorage.getItem('Gender') == "GIRL") 
-        {
-            console.log("Girl");
+        if (window.localStorage.getItem('Gender') == "GIRL") {
             document.getElementById("avatar").src = "images/avatar3.png"
-        } else
-        {
-            console.log("Boy");
+        } else {
             document.getElementById("avatar").src = "images/avatar2.png"
+        }
+
+        document.getElementById("logout").onclick = function () {
+            let text = "Sure you want to logout?";
+            if (confirm(text) == true) {
+                localStorage.clear();
+                window.location = "index.html"
+            }
+        }
+
+        function onLoad() {
+            document.addEventListener("deviceready", onDeviceReady, false);
+            function onDeviceReady() {
+                alert("Ready");
+                document.addEventListener("backbutton", function (e) {
+                    e.preventDefault();
+                }, false);
+            }
         }
     </script>
 

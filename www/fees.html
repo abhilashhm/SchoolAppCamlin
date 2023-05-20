@@ -6,10 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>
-        Calendar
+        Profile
     </title>
 
     <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/fees.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif|Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/reset.css">
@@ -17,33 +18,11 @@
 
     <script src="js/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.25/vue.min.js" type="text/javascript"></script>
+    <script src="js/bootstrap.min.js"></script>
 
-    <style>
-        html {
-            height: 100%
-        }
-
-        body {
-            height: 100%;
-            overflow: overlay;
-        }
-
-        iframe {
-            height: 100%;
-            width: 100%;
-            margin-bottom: 40px;
-            margin-top: -30px;
-        }
-
-        p {
-            margin: 0 !important;
-        }
-    </style>
 </head>
 
 <body>
-
-    <iframe src="calendar.html"></iframe>
 
     <div id="navigation-wrapper">
         <div class="navigation">
@@ -60,13 +39,14 @@
     </div>
 
     <script>
+
         var app = new Vue({
             el: '#navigation-wrapper',
             data: {
                 navigation: [
                     { name: 'HOME', icon: 'home', selected: false },
-                    { name: 'CALENDAR', icon: 'calendar_month', selected: true },
-                    { name: 'FEES', icon: 'payment', selected: false },
+                    { name: 'CALENDAR', icon: 'calendar_month', selected: false },
+                    { name: 'FEES', icon: 'payment', selected: true },
                     { name: 'PROFILE', icon: 'account_circle', selected: false }
                 ]
             },
@@ -80,8 +60,8 @@
                         case 0:
                             location.href = 'landing.html'
                             break;
-                        case 2:
-                            location.href = 'fees.html'
+                        case 1:
+                            location.href = 'cal.html'
                             break;
                         case 3:
                             location.href = 'profile.html'
@@ -91,12 +71,6 @@
             }
         })
 
-        document.addEventListener("deviceready", onDeviceReady, false);
-        function onDeviceReady() {
-            document.addEventListener("backbutton", function (e) {
-                e.preventDefault();
-            }, false);
-        }
     </script>
 
 </body>

@@ -9,19 +9,19 @@
         Home Page
     </title>
 
-    <link rel="stylesheet" href="css/landing.css">
     <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/landing.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif|Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/reset.css">
-    <link rel="stylesheet" href="css/slider.css">
 
     <script src="js/jquery.min.js"></script>
     <script src="js/loader.js"></script>
+    <script src="js/slider.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"
         type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.25/vue.min.js" type="text/javascript"></script>
-    <script async src="https://kit.fontawesome.com/6cc05e1e8e.js" crossorigin="anonymous"></script>    
+    <script async src="https://kit.fontawesome.com/6cc05e1e8e.js" crossorigin="anonymous"></script>
 
 </head>
 
@@ -46,6 +46,7 @@
     </div>
 
     <script>
+        document.getElementById("cd-timeline").innerHTML = '';
         const mobno = window.localStorage.getItem('LoggedInMob');
 
         jQuery(document).ready(function ($) {
@@ -68,13 +69,37 @@
             });
         });
 
-        const url = `http://68.178.168.127/camlinwebservice/getTimeLine/${mobno}`;
+        const atturl = `http://68.178.168.127/camlinwebservice/getattdata/${mobno}`;
 
         $.ajax({
             type: "GET",
-            url: url,
+            url: atturl,
+            success: function (xml1) {
+                // console.log(xml1);
+
+                if ((xml1.getElementsByTagName('Response')[0].childNodes[0].nodeValue).match("FAILED: Mobile number / Attendance Data not found")) {
+                    document.getElementById("cd-timeline").innerHTML += "<div class='no-data'>Attendance Data not found!</div>";
+                } else {
+                    document.getElementById("cd-timeline").innerHTML += "<div class='cd-timeline-block'><div class='cd-timeline-img cd-picture'><img src='images/checkin.png'></div><div class='cd-timeline-content'><h2>" + xml1.getElementsByTagName('Name')[0].childNodes[0].nodeValue + " Checked-In to Kindergarten to at " + xml1.getElementsByTagName('Checkin')[0].childNodes[0].nodeValue + "</h2><p></p><div class='cd-content'><span class='cd-date'>" + xml1.getElementsByTagName('Checkin')[0].childNodes[0].nodeValue + "</span><span class='cd-time'></span><span class='published'>" + xml1.getElementsByTagName('Name')[0].childNodes[0].nodeValue + "</span></div></div></div>" +
+
+                        "<div class='cd-timeline-block'><div class='cd-timeline-img cd-picture'><img src='images/checkin.png'></div><div class='cd-timeline-content'><h2>" + xml1.getElementsByTagName('Name')[0].childNodes[0].nodeValue + " Checked-Out from Kindergarten to at " + xml1.getElementsByTagName('Checkout')[0].childNodes[0].nodeValue + "</h2><p></p><div class='cd-content'><span class='cd-date'>" + xml1.getElementsByTagName('Checkout')[0].childNodes[0].nodeValue + "</span><span class='cd-time'></span><span class='published'>" + xml1.getElementsByTagName('Name')[0].childNodes[0].nodeValue + "</span></div></div></div>";
+                }
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+                alert(status);
+                alert(error);
+            },
+            cache: false
+        });
+
+        const timelineurl = `http://68.178.168.127/camlinwebservice/getTimeLine/${mobno}`;
+
+        $.ajax({
+            type: "GET",
+            url: timelineurl,
             success: function (xml) {
-                console.log(xml);
+                // console.log(xml);
                 //alert(data.documentElement.getElementsByTagName("Response")[0].childNodes[0].nodeValue);
 
                 // let parser = new DOMParser();
@@ -89,8 +114,50 @@
                     //alert(xml.getElementsByTagName('Title')[0].nodeValue);
                     //console.log(xml.getElementsByTagName('Attachment')[0].childNodes[0].nodeValue);
 
+                    var signatures = {
+                        R0lGODdh: "image/gif",
+                        R0lGODlh: "image/gif",
+                        iVBORw0KGgo: "image/png",
+                        "/9j/": "image/jpg"
+                    };
+
+                    function detectMimeType(b64) {
+                        for (var s in signatures) {
+                            if (b64.indexOf(s) === 0) {
+                                return signatures[s];
+                            }
+                        }
+                    }
+
+                    let imgs = 0;
+                    var hex = new Array();
+
                     for (let i = 0; i < xml.getElementsByTagName('Message').length; i++) {
-                        document.getElementById("cd-timeline").innerHTML += "<div class='cd-timeline-block'><div class='cd-timeline-img cd-picture'><img src='images/" + xml.getElementsByTagName('CommunicationType')[i].childNodes[0].nodeValue + ".jpg' alt='Picture'></div><div class='cd-timeline-content'><h2>" + window.localStorage.getItem('Name') + " | " + xml.getElementsByTagName('CommunicationType')[i].childNodes[0].nodeValue + "</h2><p>" + xml.getElementsByTagName('Body')[i].childNodes[0].nodeValue + "</p><!--<a href='#0' class='cd-read-more'>Read more</a>--><div class='cd-content'><span class='cd-date'>" + xml.getElementsByTagName('Date')[i].childNodes[0].nodeValue + "</span><span class='cd-time'>" + xml.getElementsByTagName('Time')[i].childNodes[0].nodeValue + "</span><span class='published'>" + xml.getElementsByTagName('PublishedBy')[i].childNodes[0].nodeValue + "</span></div></div></div>";
+                        document.getElementById("cd-timeline").innerHTML += "<div class='cd-timeline-block'><div class='cd-timeline-img cd-picture'><img src='images/" + xml.getElementsByTagName('CommunicationType')[i].childNodes[0].nodeValue + ".jpg' alt='Picture'></div><div class='cd-timeline-content'><h2>" + window.localStorage.getItem('Name') + " | " + xml.getElementsByTagName('Title')[i].childNodes[0].nodeValue + " | " + xml.getElementsByTagName('CommunicationType')[i].childNodes[0].nodeValue + "</h2><p>" + xml.getElementsByTagName('Body')[i].childNodes[0].nodeValue + "</p><!--<a href='#0' class='cd-read-more'>Read more</a>--><div class='cd-content'><span class='cd-date'>" + xml.getElementsByTagName('Date')[i].childNodes[0].nodeValue + "</span><span class='cd-time'>" + xml.getElementsByTagName('Time')[i].childNodes[0].nodeValue + "</span><span class='published'>" + xml.getElementsByTagName('PublishedBy')[i].childNodes[0].nodeValue + "</span></div></div></div>";
+
+                        // console.log(xml.getElementsByTagName('Attachment')[i].childNodes[0].nodeValue);
+
+                        if (detectMimeType(xml.getElementsByTagName('Attachment')[i].childNodes[0].nodeValue)) {
+                            imgs++;
+                            data = "<img src='data:" + detectMimeType(xml.getElementsByTagName('Attachment')[i].childNodes[0].nodeValue) + ";base64," + xml.getElementsByTagName('Attachment')[i].childNodes[0].nodeValue + "'>"
+                            hex.push(data);
+                            // console.log(data);
+                        }
+                        console.log(hex);
+                        console.log("Imgs:"+imgs);
+
+                        if (imgs !=0 ) {
+                            document.getElementById("cd-timeline").innerHTML += "<div class='slider-wrapper'><div class='slider-container' id='slider-container"+i+"'></div><div class='slider-controls'><span class='control prev'>&larr;</span><span class='control next'>&rarr;</span></div></div>"
+
+                            var id = "slider-container"+i;
+
+                            for (let i = 0; i < imgs; i++) {
+                                document.getElementById(id).innerHTML += hex[i];
+                            }
+                        }
+
+                        hex = [];
+                        imgs = 0;
                     }
                 }
             },
@@ -110,6 +177,7 @@
                 navigation: [
                     { name: 'HOME', icon: 'home', selected: true },
                     { name: 'CALENDAR', icon: 'calendar_month', selected: false },
+                    { name: 'FEES', icon: 'payment', selected: false },
                     { name: 'PROFILE', icon: 'account_circle', selected: false }
                 ]
             },
@@ -124,13 +192,24 @@
                             location.href = 'cal.html'
                             break;
                         case 2:
+                            location.href = 'fees.html'
+                            break;
+                        case 3:
                             location.href = 'profile.html'
                             break;
                     }
                 }
             }
         })
+
+        document.addEventListener("deviceready", onDeviceReady, false);
+        function onDeviceReady() {
+            document.addEventListener("backbutton", function (e) {
+                e.preventDefault();
+            }, false);
+        }
     </script>
+
 </body>
 
 </html>

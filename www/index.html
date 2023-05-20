@@ -194,6 +194,7 @@
 							// Generate a 6 digit OTP
 							const otpgen = Math.floor(100000 + Math.random() * 900000);
 							window.localStorage.setItem('otpgen', otpgen);
+							// alert(otpgen);
 							console.log(window.localStorage.getItem('otpgen'));
 
 							const url = `https://api.onex-aura.com/api/sms?key=${key}&to=${to}&from=${from}&body=Dear%20User,%20Your%20OTP%20for%20login%20to%20Camlin%20School%20app%20is%20${otpgen}.%20Valid%20for%2010%20minutes.%20Please%20do%20not%20share%20this%20OTP.%20Regards,%20CAMLIN%20SCHOOL&entityid=${entityid}&templateid=${templateid}`;
@@ -251,6 +252,12 @@
 			}
 		}
 
+		document.addEventListener("deviceready", onDeviceReady, false);
+        function onDeviceReady() {
+            document.addEventListener("backbutton", function (e) {
+                e.preventDefault();
+            }, false);
+        }
 	</script>
 
 </body>

@@ -101,6 +101,9 @@ a.link {
     padding: 7px 12px;
     cursor: pointer;
     margin: 30px;
+    width: 85%;
+    height: 50px;
+    font-size: 15px !important;
 }
 
 .text-muted {
@@ -116,4 +119,8 @@ a.link {
 
 p {
     margin: 0 !important;
+}
+
+.container {
+    margin: 10px;
 }
